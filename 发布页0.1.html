@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta http-equiv="Cache-Control" content="no-transform" />
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge, chrome=1" />
+    <meta name="description" content="刘十三魔改发布页">
+    <title>发布页0.1</title>
+    <link rel="icon" href="/favicon.ico" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/mdui/0.4.2/css/mdui.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href='http://fonts.font.im/css?family=Itim' rel='stylesheet' type='text/css'>
+
+    <!-- 以下为自定义样式 -->
+    <style>
+        body {
+            background-image: url(bk.png);
+            background-image: url(https://s3.bmp.ovh/imgs/2024/08/27/08e92435dad6d0ce.png);
+            background-size: cover;
+            background-attachment: fixed;
+            background-position: center;
+        }
+
+        .mdui-card {
+            background: rgba(255, 255, 255, 0.1);
+            transition: background 0.5s, box-shadow 0.3s ease-in-out;
+            border-radius: 7px;
+            backdrop-filter: blur(5px);
+            overflow: hidden;
+            /* 确保内容不会溢出 */
+            position: relative;
+            /* 为新文字定位 */
+        }
+
+        .mdui-card .mdui-card-primary,
+        .mdui-card .mdui-card-content {
+            transition: opacity 0.6s;
+            /* 过渡效果 */
+        }
+
+        .mdui-card .new-text {
+            position: absolute;
+            top: 0 width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            /* 新文字颜色 */
+            opacity: 0;
+            /* 初始时不可见 */
+            transition: opacity 0.6s;
+            /* 过渡效果 */
+            z-index: 1;
+            /* 在原始文字之上 */
+            padding: 20px;
+        }
+
+        /* 鼠标悬停时，隐藏内容区域 */
+        .mdui-card:hover .mdui-card-content {
+            visibility: hidden;
+            opacity: 0;
+            transition: visibility 0s, opacity 0.3s linear;
+        }
+
+        /* 卡片标题样式 */
+        .mdui-card-primary {
+            padding: 15px;
+        }
+
+        /* 卡片内容样式 */
+        .mdui-card-content {
+            padding: 15px;
+            transition: visibility 0s, opacity 0.3s linear;
+        }
+
+        .mdui-card:hover .new-text {
+            opacity: 1;
+            /* 鼠标悬停时，显示新文字 */
+        }
+
+        .mdui-card-primary,
+        .mdui-card-content {
+            color: #000;
+        }
+
+        /*卡片移动*/
+        .card-left {
+            transform: translateX(-100%);
+        }
+
+        .card-right {
+            transform: translateX(100%);
+        }
+
+        .card-visible {
+            transform: translateX(0);
+        }
+
+        .expand-trigger {
+            display: block;
+            margin: 20px auto;
+            padding: 10px 20px;
+            cursor: pointer;
+        }
+
+        /* 定义基础动画效果 */
+        .card-move {
+            transition-property: transform, opacity;
+            transition-duration: 5s !important;
+            transition-delay: 1s;
+            transition-timing-function: ease-in-out, ease;
+        }
+
+        /* 以下为自适应代码 */
+        /* 基础样式，适用于所有设备 */
+        body {
+            font-family: 'Arial', sans-serif;
+        }
+
+        /* 使用媒体查询为小屏幕设备重写样式 */
+        @media (max-width: 768px) {
+            .container {
+                width: 95%;
+            }
+        }
+
+        /* 使用媒体查询为大屏幕设备增加额外样式 */
+        @media (min-width: 769px) and (max-width: 1024px) {
+            /* 针对平板设备的样式 */
+        }
+
+        /* 使用媒体查询为超大屏幕设备增加样式 */
+        @media (min-width: 1025px) {
+            /* 针对桌面显示器的样式 */
+        }
+
+
+        /* 以下为增加点击效果的css*/
+        /* 定义点击效果的基础样式 */
+        .click-effect {
+            position: absolute;
+            border-radius: 50%;
+            background-color: black;
+            opacity: 0.5;
+            transform: scale(0);
+            transition: transform 0.8s ease, opacity 0.8s ease;
+            /* 设置过渡效果 */
+        }
+
+        /* 点击动画效果 */
+        .click-effect.animate {
+            transform: scale(1);
+            /* 扩散到一定大小 */
+            opacity: 0;
+            /* 透明度变为0，逐渐消失 */
+        }
+
+        /*去除下划线*/
+        .remove-underline {
+            text-decoration: none;
+        }
+
+        .avatar {
+            position: absolute;
+            top: 10px;
+            left: 80%;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            /* 新文字颜色 */
+            opacity: 1;
+            /* 初始时不可见 */
+            transition: opacity 0.6s;
+            /* 过渡效果 */
+            z-index: 1;
+            ;
+            border-radius: 50%;
+            overflow: hidden;
+            width: 60px;
+            height: 60px;
+            margin: 0 auto;
+        }
+
+        .avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .avatar:hover {
+            opacity: 1;
+        }
+
+        .bolder {
+            font-weight: bold;
+        }
+
+        .mdui-card-primary-subtitle {
+            display: flex;
+            align-items: center;
+            /* 垂直居中 */
+            height: 100px;
+            /* 父元素需要一个高度 */
+        }
+    </style>
+</head>
+
+<body class="mdui-theme-primary-black mdui-theme-accent-pink">
+    <div id=title-card class="mdui-container mdui-m-t-2">
+        <div class="mdui-row">
+            <div class="mdui-col-md-6 mdui-col-offset-md-3 mdui-m-b-2">
+                <div class="mdui-card">
+                    <!-- 新文字容器 -->
+                    <div class="new-text">
+                        当你看到这里，一个破碎的心灵燃起星火！
+                    </div>
+                    <div class="mdui-card-primary">
+                        <div class="mdui-card-primary-title">
+                            <span id="colorful-text" class="bolder" style="color:#e88f22;font-size: 30px;">山雾秋☪</span>
+                        </div>
+
+                        <!-- 诗句显示位置 -->
+                        <div class="mdui-card-primary-subtitle" style="color:#ffffff;">
+                            <p id="random-poem">诗云...</p>
+                        </div>
+                    </div>
+                    <div class="avatar">
+                        <img src="https://s3.bmp.ovh/imgs/2024/08/31/1e157341b7c62420.jpg" alt="Avatar">
+                        <audio id="myAudio">
+                            <source src="晴天 - 周杰伦.mp3" type="audio/mp3">
+                        </audio>
+                    </div>
+                </div>
+            </div>
+            <div class="mdui-col-md-6 mdui-col-offset-md-3">
+                <div class="mdui-row">
+                    <div class="mdui-col-xs-12 mdui-col-sm-6 mdui-m-b-2">
+                        <a href="https://haokawx.lot-ml.com/Product/index/519797" target="_blank"
+                            class="remove-underline">
+                            <div class="mdui-card clickable">
+                                <div class="mdui-card-header">
+                                    <div class="mdui-card-header-title" style="color:#fc7676 ;">
+                                        <b>流量卡</b>
+                                    </div>
+                                </div>
+
+                            </div>
+                    </div>
+                    <div class="mdui-col-xs-12 mdui-col-sm-6 mdui-m-b-2">
+                        <a href="https://tn.uraz.cn/sB6hn" target="_blank" class="remove-underline">
+                            <div class="mdui-card clickable">
+                                <div class="mdui-card-header">
+
+                                    <div class="mdui-card-header-title" style="color:#ebd086;">
+                                        <b>资源网</b>
+                                    </div>
+                                </div>
+                            </div>
+                    </div>
+                </div>
+            </div>
+            <div class="mdui-col-md-6 mdui-col-offset-md-3">
+                <div class="mdui-row">
+                    <div class="mdui-col-xs-12 mdui-col-sm-6 mdui-m-b-2">
+                        <a href="https://farming-goods.lingjingshangdian.com/#/pages/register/register?invitationCode=G2O4FSVK"
+                            target="_blank" class="remove-underline">
+                            <div class="mdui-card clickable">
+                                <div class="mdui-card-header">
+                                    <div class="mdui-card-header-title" style="color:#7dc1f4;">
+                                        <b>梦工厂</b>
+                                    </div>
+                                </div>
+                            </div>
+                    </div>
+                    <div class="mdui-col-xs-12 mdui-col-sm-6 mdui-m-b-2">
+                        <a href="https://hap021819.github.io/" target="_blank" class="remove-underline">
+                            <div class="mdui-card clickable">
+                                <div class="mdui-card-header">
+                                    <div class="mdui-card-header-title" style="color: #6eb498;">
+                                        <b>赏颜阁</b>
+                                    </div>
+                                </div>
+                            </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var cards = document.querySelectorAll('.mdui-col-xs-12.mdui-col-sm-6 .mdui-card');
+            var isHidden = false;
+
+            // 获取卡片的边界坐标，用于判断点击位置
+            var cardBounds = [];
+            cards.forEach(function (card) {
+                var rect = card.getBoundingClientRect();
+                cardBounds.push(rect);
+            });
+
+            // 监听整个document的点击事件
+            document.addEventListener('click', function (event) {
+                // 检查点击位置是否在卡片外部
+                var isOutsideCard = true;
+                cardBounds.forEach(function (bounds) {
+                    if (event.clientX >= bounds.left && event.clientX <= bounds.right &&
+                        event.clientY >= bounds.top && event.clientY <= bounds.bottom) {
+                        isOutsideCard = false;
+                    }
+                });
+
+                // 如果点击在卡片外部，则触发动画
+                if (isOutsideCard) {
+                    isHidden = !isHidden;
+                    cards.forEach(function (card, index) {
+                        // 根据索引决定向左或向右移动
+                        var isLeft = index % 2 === 0;
+                        card.classList.toggle(isLeft ? 'card-left' : 'card-right', isHidden);
+                        card.classList.toggle('card-visible', !isHidden);
+                    });
+                }
+            });
+        });
+        // 点击效果实现的js代码
+        document.addEventListener('click', function (event) {
+            // 定义两个圆的半径
+            var largeRadius = 40; // 大圆的半径
+            var smallRadius = 20; // 小圆的半径
+
+            // 创建大圆元素
+            var largeCircle = createCircle(largeRadius, '#7e57c2', event);
+            document.body.appendChild(largeCircle);
+
+            // 创建小圆元素
+            var smallCircle = createCircle(smallRadius, '#1cae57', event);
+            document.body.appendChild(smallCircle);
+
+            // 启动动画
+            setTimeout(function () {
+                largeCircle.classList.add('animate');
+            }, 0);
+
+            setTimeout(function () {
+                smallCircle.classList.add('animate');
+            }, 100); // 小圆动画延迟100ms
+
+            // 定义移除元素的函数
+            function removeCircles() {
+                largeCircle.removeEventListener('transitionend', removeCircles);
+                smallCircle.removeEventListener('transitionend', removeCircles);
+                document.body.removeChild(largeCircle);
+                document.body.removeChild(smallCircle);
+            }
+
+            // 添加事件监听器以在过渡结束后移除元素
+            largeCircle.addEventListener('transitionend', removeCircles);
+            smallCircle.addEventListener('transitionend', removeCircles);
+
+            // 创建圆形元素的函数
+            function createCircle(radius, color, event) {
+                var circle = document.createElement('div');
+                circle.className = 'click-effect';
+                circle.style.width = circle.style.height = (2 * radius) + 'px';
+                circle.style.backgroundColor = color;
+                circle.style.left = event.pageX - radius + 'px';
+                circle.style.top = event.pageY - radius + 'px';
+                return circle;
+            }
+        });
+
+        // 随机诗句api接入
+        // 当DOM内容完全加载后执行
+        document.addEventListener('DOMContentLoaded', function () {
+            // 定义获取随机诗句的函数
+            function fetchPoem() {
+                fetch('http://www.wudada.online/Api/ScSj')  // 确保这是实际的API URL
+                    .then(response => {
+                        // 检查响应状态
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        // 假设API返回的数据是一个对象，诗句在data字段中
+                        const poemElement = document.getElementById('random-poem');
+                        // 确保data字段存在并使用它，否则作为回退使用默认诗句
+                        poemElement.innerText = data.data || '这里是随机诗句';
+                    })
+                    .catch(error => {
+                        // 错误处理
+                        console.error('Error fetching the poem:', error);
+                        const poemElement = document.getElementById('random-poem');
+                        poemElement.innerText = '加载诗句失败';
+                    });
+            }
+
+            // 页面加载完成后自动获取诗句
+            fetchPoem();
+        });
+
+        //字体变化颜色
+        const colors = ['#fc7676', '#785bf7', '#7dc1f4', '#6eb498', '#ebd086'];
+        let colorIndex = 0;
+
+        function changeTextColor() {
+            const textElement = document.getElementById('colorful-text');
+            textElement.style.color = colors[colorIndex];
+            colorIndex = (colorIndex + 1) % colors.length;
+        }
+
+        // 每1000毫秒改变一次颜色
+        setInterval(changeTextColor, 3000);
+
+        // 生成随机颜色的函数
+        //
+        let usedColors = [];
+        function getRandomColor() {
+            let color;
+            do {
+                color = '#' + Math.floor(Math.random() * 16777215).toString(16); // 生成一个随机的十六进制颜色
+            } while (usedColors.includes(color)); // 检查颜色是否已经在数组中
+            usedColors.push(color); // 颜色可用，添加到数组中
+            return color;
+        }
+
+        // 获取所有卡片元素
+        document.querySelectorAll('.mdui-card').forEach(card => {
+            const initialBackgroundColor = card.style.background;
+            const content = card.querySelector('.mdui-card-primary, .mdui-card-content');
+
+            card.addEventListener('mouseover', function () {
+                this.style.background = getRandomColor();
+                content.style.opacity = '0';
+            });
+
+            card.addEventListener('mouseout', function () {
+                this.style.background = initialBackgroundColor;
+                content.style.opacity = '1';
+            });
+        });
+
+
+        //以下为禁用右键和F12
+        document.addEventListener('keydown', function (event) {
+            if (event.keyCode === 123) { // F12的键码是123
+                event.preventDefault();
+                // 这里可以添加一些提示，alert('开发者工具已被禁用');
+            }
+        });
+        document.addEventListener('contextmenu', function (event) {
+            event.preventDefault();
+        });
+
+        // 获取头像元素和音频元素
+        const avatar = document.querySelector('.avatar');
+        const audio = document.getElementById('myAudio');
+
+        // 添加点击事件监听器
+        avatar.addEventListener('click', function () {
+            // 检查音频是否正在播放
+            if (audio.paused) {
+                // 如果音频暂停，播放它
+                audio.play();
+            } else {
+                // 如果音频正在播放，暂停它
+                audio.pause();
+            }
+        });
+
+
+    </script>
+</body>
+
+</html>

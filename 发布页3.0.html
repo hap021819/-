@@ -1,0 +1,864 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta http-equiv="Cache-Control" content="no-transform" />
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge, chrome=1" />
+    <meta name="description" content="刘十三魔改发布页山雾秋">
+    <title>发布页</title>
+    <link rel="icon" href="/favicon.ico" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/mdui/0.4.2/css/mdui.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href='http://fonts.font.im/css?family=Itim' rel='stylesheet' type='text/css'>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.2.3/howler.min.js"></script>
+    <!-- 以下为自定义样式 -->
+    <style>
+        body {
+            /* 设置多重背景 */
+            background:
+                url('bg1.png'),
+                url('bg2.png'),
+                url('bg3.png'),
+                url('bg4.png'),
+                linear-gradient(to right, rgb(126, 110, 198), rgba(45, 168, 220, 0.979));
+            background-size: cover;
+            background-attachment: fixed;
+            background-position: center;
+            background-color: black;
+            /* 设置背景颜色为黑色 */
+        }
+
+        /* 定义背景图片的样式 */
+        .bg-image-1 {
+            background-image: url(bg1.png);
+        }
+
+        .bg-image-2 {
+            background-image: url(bg2.png);
+        }
+
+        .bg-image-3 {
+            background-image: url(bg3.png);
+        }
+
+        .bg-image-4 {
+            background-image: url(bg4.png);
+        }
+
+
+        .mdui-card {
+            background: rgba(255, 255, 255, 0.1);
+            transition: background 0.5s, box-shadow 0.3s ease-in-out;
+            border-radius: 7px;
+            backdrop-filter: blur(5px);
+            overflow: hidden;
+            /* 确保内容不会溢出 */
+            position: relative;
+            /* 为新文字定位 */
+        }
+
+        .mdui-card .mdui-card-primary,
+        .mdui-card .mdui-card-content {
+            transition: opacity 0.6s;
+            /* 过渡效果 */
+        }
+
+        .mdui-card .new-text {
+            position: absolute;
+            top: 5px;
+            left: 0;
+            width: 50%;
+            height: 100%;
+            color: #fff;
+            /* 新文字颜色 */
+            opacity: 0;
+            /* 初始时不可见 */
+            transition: opacity 0.6s;
+            /* 过渡效果 */
+            z-index: 1;
+            /* 在原始文字之上 */
+            padding: 20px;
+            line-height: 24px;
+            /* 行间距设置为24像素 */
+        }
+
+        /* 鼠标悬停时，隐藏内容区域 */
+        .mdui-card:hover .mdui-card-content {
+            visibility: hidden;
+            opacity: 0;
+            transition: visibility 0s, opacity 0.3s linear;
+        }
+
+        /* 卡片标题样式 */
+        .mdui-card-primary {
+            padding: 15px;
+        }
+
+        /* 卡片内容样式 */
+        .mdui-card-content {
+            padding: 15px;
+            transition: visibility 0s, opacity 0.6s linear;
+        }
+
+        .mdui-card:hover .new-text {
+            opacity: 1;
+            /* 鼠标悬停时，显示新文字 */
+            color: #fff;
+            /* 新文字颜色 */
+        }
+
+        .mdui-card-primary,
+        .mdui-card-content {
+            color: #000;
+        }
+
+        /*卡片移动*/
+        .card-left {
+            transform: translateX(-100%);
+        }
+
+        .card-right {
+            transform: translateX(100%);
+        }
+
+        .card-visible {
+            transform: translateX(0);
+        }
+
+        .expand-trigger {
+            display: block;
+            margin: 20px auto;
+            padding: 10px 20px;
+            cursor: pointer;
+        }
+
+        /* 定义基础动画效果 */
+        .card-move {
+            transition-property: transform, opacity;
+            transition-duration: s !important;
+            transition-delay: 0.3s;
+            transition-timing-function: ease-in-out, ease;
+        }
+
+        /* 以下为自适应代码 */
+        /* 基础样式，适用于所有设备 */
+        body {
+            font-family: 'Arial', sans-serif;
+        }
+
+        /* 使用媒体查询为小屏幕设备重写样式 */
+        @media (max-width: 768px) {
+            .container {
+                width: 95%;
+            }
+        }
+
+        /* 使用媒体查询为大屏幕设备增加额外样式 */
+        @media (min-width: 769px) and (max-width: 1024px) {
+            /* 针对平板设备的样式 */
+        }
+
+        /* 使用媒体查询为超大屏幕设备增加样式 */
+        @media (min-width: 1025px) {
+            /* 针对桌面显示器的样式 */
+        }
+
+
+        /* 以下为增加点击效果的css*/
+        /* 定义点击效果的基础样式 */
+        .click-effect {
+            position: absolute;
+            border-radius: 50%;
+            background-color: black;
+            opacity: 0.5;
+            transform: scale(0);
+            transition: transform 0.8s ease, opacity 0.8s ease;
+            /* 设置过渡效果 */
+        }
+
+        /* 点击动画效果 */
+        .click-effect.animate {
+            transform: scale(1);
+            /* 扩散到一定大小 */
+            opacity: 0;
+            /* 透明度变为0，逐渐消失 */
+        }
+
+        /*去除下划线*/
+        .remove-underline {
+            text-decoration: none;
+        }
+
+        /* 卡片鼠标悬停效果 */
+        .mdui-card:hover {
+            transform: scale(1.05);
+            /* 轻微放大 */
+            transition: transform 0.3s ease;
+            /* 平滑过渡 */
+
+        }
+
+        /* 移动端样式 */
+        @media (max-width: 768px) {
+            .mdui-container {
+                padding: 0 15px;
+            }
+
+            .mdui-card {
+                margin-bottom: 15px;
+            }
+        }
+
+        #background-tip {
+            position: fixed;
+            left: 50%;
+            bottom: 10px;
+            transform: translateX(-50%);
+            background-color: rgba(255, 255, 255, 0.2);
+            /* 半透明背景 */
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            text-align: center;
+            z-index: 1000;
+            /* 确保在顶部 */
+        }
+
+        @keyframes rotate {
+            from {
+                transform: rotate(0deg);
+            }
+
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .avatar {
+            position: relative;
+            border-radius: 50%;
+            overflow: hidden;
+            width: 30px;
+            height: 30px;
+        }
+
+        .avatar img {
+            width: 100%;
+            /* 使图片填满容器 */
+            height: 100%;
+            /* 使图片填满容器 */
+            border-radius: 50%;
+            /* 使图片呈现圆形 */
+            object-fit: cover;
+            /* 保证图片不失真地填充容器 */
+        }
+
+        /* 头像框样式 */
+        .avatar-container {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            animation: rotate 10s infinite linear;
+            /* 应用旋转动画 */
+        }
+
+        @keyframes rotate {
+            from {
+                transform: rotate(0deg);
+            }
+
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .rotating {
+            animation: rotate 10s infinite linear;
+        }
+
+        /* 头像边框样式 */
+        .gradient-border-shadow {
+            position: relative;
+            border-radius: 50%;
+            overflow: hidden;
+            width: 90px;
+            height: 90px;
+            border: 2px solid #fff;
+            animation: border-color-change 5s infinite;
+            opacity: 0.8;
+        }
+
+        .qiehuanbg {
+            position: relative;
+            border-radius: 50%;
+            /* 使元素变为圆形 */
+            overflow: hidden;
+            /* 隐藏超出元素边界的内容 */
+            width: 30px;
+            height: 30px;
+            background-color: rgba(255, 255, 255, 0.5);
+            /* 设置背景颜色为白色半透明 */
+            border: 2px solid transparent;
+            /* 设置边框为透明，以便变色动画可以显示 */
+            animation: border-color-change 5s infinite;
+            /* 应用变色动画 */
+            opacity: 0.8;
+            /* 设置元素的不透明度为0.8 */
+        }
+
+        .gecizhanshi {
+            position: absolute;
+            bottom: 10px;
+            /* 距离父元素底部10px */
+            left: 50px;
+            /* 距离父元素左侧50px */
+            border-radius: 50%;
+            overflow: hidden;
+            width: 30px;
+            height: 30px;
+            background-color: rgba(255, 255, 255, 0.5);
+            border: 2px solid transparent;
+            animation: border-color-change 5s infinite;
+            opacity: 0.8;
+            display: flex;
+            justify-content: center;
+            /* 水平居中 */
+            align-items: center;
+            /* 垂直居中 */
+            font-size: 12px;
+            /* 设置文字大小 */
+            font-weight: bold;
+            /* 可选：加粗文字 */
+            color: #000;
+            /* 设置文字颜色 */
+        }
+
+        /* 确保文字不会超过按钮大小 */
+        .gecizhanshi::before {
+            max-width: 100%;
+            /* 最大宽度不超过按钮宽度 */
+            white-space: nowrap;
+            /* 防止文本换行 */
+            text-overflow: ellipsis;
+            /* 超出部分显示省略号 */
+            overflow: hidden;
+            /* 隐藏超出部分 */
+        }
+
+        .gecizhanshi:hover {
+            transform: scale(1.2);
+            transition: transform 0.3s ease;
+        }
+
+        .guanyuzuozhe {
+            position: absolute;
+            bottom: 10px;
+            /* 距离父元素底部10px */
+            right: 50px;
+            /* 距离父元素左侧50px */
+            border-radius: 50%;
+            overflow: hidden;
+            width: 30px;
+            height: 30px;
+            background-color: rgba(255, 255, 255, 0.5);
+            border: 2px solid transparent;
+            animation: border-color-change 5s infinite;
+            opacity: 0.8;
+            display: flex;
+            justify-content: center;
+            /* 水平居中 */
+            align-items: center;
+            /* 垂直居中 */
+            font-size: 12px;
+            /* 设置文字大小 */
+            font-weight: bold;
+            /* 可选：加粗文字 */
+            color: #000;
+            /* 设置文字颜色 */
+        }
+
+        /* 确保文字不会超过按钮大小 */
+        .guanyuzuozhe::before {
+            max-width: 100%;
+            /* 最大宽度不超过按钮宽度 */
+            white-space: nowrap;
+            /* 防止文本换行 */
+            text-overflow: ellipsis;
+            /* 超出部分显示省略号 */
+            overflow: hidden;
+            /* 隐藏超出部分 */
+        }
+
+        .guanyuzuozhe:hover {
+            transform: scale(1.2);
+            transition: transform 0.3s ease;
+        }
+
+        @keyframes border-color-change {
+            0% {
+                box-shadow: 0 0 15px 5px rgba(255, 0, 0, 0.5), 0 0 15px 5px rgba(0, 255, 0, 0.5), 0 0 15px 5px rgba(0, 0, 255, 0.5), 0 0 15px 5px rgba(255, 0, 255, 0.5), 0 0 15px 5px rgba(0, 255, 255, 0.5);
+            }
+
+            20% {
+                box-shadow: 0 0 15px 5px rgba(255, 255, 0, 0.5), 0 0 15px 5px rgba(0, 255, 255, 0.5), 0 0 15px 5px rgba(0, 0, 255, 0.5), 0 0 15px 5px rgba(255, 0, 255, 0.5), 0 0 15px 5px rgba(255, 0, 0, 0.5);
+            }
+
+            40% {
+                box-shadow: 0 0 15px 5px rgba(0, 255, 255, 0.5), 0 0 15px 5px rgba(0, 0, 255, 0.5), 0 0 15px 5px rgba(255, 0, 255, 0.5), 0 0 15px 5px rgba(255, 0, 0, 0.5), 0 0 15px 5px rgba(255, 255, 0, 0.5);
+            }
+
+            60% {
+                box-shadow: 0 0 15px 5px rgba(0, 0, 255, 0.5), 0 0 15px 5px rgba(255, 0, 255, 0.5), 0 0 15px 5px rgba(255, 0, 0, 0.5), 0 0 15px 5px rgba(255, 255, 0, 0.5), 0 0 15px 5px rgba(0, 255, 255, 0.5);
+            }
+
+            80% {
+                box-shadow: 0 0 15px 5px rgba(255, 0, 255, 0.5), 0 0 15px 5px rgba(255, 0, 0, 0.5), 0 0 15px 5px rgba(255, 255, 0, 0.5), 0 0 15px 5px rgba(0, 255, 255, 0.5), 0 0 15px 5px rgba(0, 0, 255, 0.5);
+            }
+
+            100% {
+                box-shadow: 0 0 15px 5px rgba(255, 255, 0, 0.5), 0 0 15px 5px rgba(0, 255, 0, 0.5), 0 0 15px 5px rgba(0, 0, 255, 0.5), 0 0 15px 5px rgba(255, 0, 255, 0.5), 0 0 15px 5px rgba(0, 255, 255, 0.5);
+            }
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-10px);
+            }
+
+            100% {
+                transform: translateY(0);
+            }
+        }
+
+        .text-to-show {
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 3s, visibility 3s;
+            /* 过渡效果设置为2秒 */
+
+            /* 文字内容的位置 */
+            position: absolute;
+            top: 50%;
+            /* 从顶部开始，距离为父元素高度的50% */
+            left: 50%;
+            /* 从左侧开始，距离为父元素宽度的50% */
+            transform: translate(-50%, -50%);
+            /* 使文字居中显示 */
+
+            /* 文字样式 */
+            font-size: 18px;
+            /* 字体大小 */
+
+            color: #ffffff;
+            /* 字体颜色 */
+            text-align: center;
+            /* 文字居中对齐 */
+            width: 80%;
+            /* 文字区域的宽度 */
+            max-width: 600px;
+            /* 文字区域的最大宽度 */
+            margin: 0 auto;
+            /* 上下外边距设置为0，左右自动，配合宽度使用实现水平居中 */
+            padding: 20px;
+            /* 文字区域的内边距 */
+            border-radius: 10px;
+            /* 边框圆角 */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            /* 盒阴影效果 */
+        }
+    </style>
+</head>
+
+<body class="mdui-theme-primary-black mdui-theme-accent-pink">
+    <div id="background-tip" class="qiehuanbg">
+        点击试试
+    </div>
+    <div id="gecizhanshi" class="gecizhanshi">
+        歌词
+    </div>
+    <div id="guanyuzuozhe" class="guanyuzuozhe">
+        关于
+    </div>
+    <div id="text-to-show" class="text-to-show">
+        <p>这里是展示的文字内容</p>
+    </div>
+    <div id="title-card" class="mdui-container mdui-m-t-2">
+        <div class="mdui-row">
+            <div class="mdui-col-md-6 mdui-col-offset-md-3 mdui-m-b-2">
+                <div class="mdui-card">
+                    <!-- 新文字容器 -->
+                    <div class="new-text">
+                        <p>你是喜欢晴天还是雨天？</p>
+                        <p>我喜欢晴天。</p>
+                        <p>一起聆听吧！</p>
+                    </div>
+                    <div class="mdui-card-primary">
+                        <div class="mdui-card-primary-title">
+                            <span id="colorful-text" class="bolder" style="color:#e88f22;font-size: 30px;">山雾秋☪</span>
+                        </div>
+
+                        <!-- 诗句显示位置 -->
+                        <div class="mdui-card-primary-subtitle" style="color:#ffffff;">
+                            <p id="random-poem">诗云...</p>
+                        </div>
+                    </div>
+                    <div class="mdui-card-content" style="color: #ffffff;text-align: center;">
+                        <!--这里可以加一行字-->
+                    </div>
+                    <div id="avatar" class="avatar-container">
+                        <img src="https://s3.bmp.ovh/imgs/2024/08/31/1e157341b7c62420.jpg" alt="头像"
+                            class="gradient-border-shadow avatar">
+                    </div>
+                    <audio id="myAudio" src="music.mp3"></audio>
+                </div>
+            </div>
+            <div class="mdui-col-md-6 mdui-col-offset-md-3">
+                <div class="mdui-row">
+                    <div class="mdui-col-xs-12 mdui-col-sm-6 mdui-m-b-2">
+                        <a href="https://haokawx.lot-ml.com/Product/index/519797" target="_blank"
+                            class="remove-underline">
+                            <div class="mdui-card clickable">
+                                <div class="mdui-card-header">
+                                    <div class="mdui-card-header-title" style="color:#fc7676 ;">
+                                        <b>流量卡</b>
+                                    </div>
+                                </div>
+
+                            </div>
+                    </div>
+                    <div class="mdui-col-xs-12 mdui-col-sm-6 mdui-m-b-2">
+                        <a href="https://tn.uraz.cn/sB6hn" target="_blank" class="remove-underline">
+                            <div class="mdui-card clickable">
+                                <div class="mdui-card-header">
+
+                                    <div class="mdui-card-header-title" style="color:#ebd086;">
+                                        <b>刷资源</b>
+                                    </div>
+                                </div>
+                            </div>
+                    </div>
+                </div>
+            </div>
+            <div class="mdui-col-md-6 mdui-col-offset-md-3">
+                <div class="mdui-row">
+                    <div class="mdui-col-xs-12 mdui-col-sm-6 mdui-m-b-2">
+                        <a href="https://farming-goods.lingjingshangdian.com/#/pages/register/register?invitationCode=G2O4FSVK"
+                            target="_blank" class="remove-underline">
+                            <div class="mdui-card clickable">
+                                <div class="mdui-card-header">
+                                    <div class="mdui-card-header-title" style="color:#7dc1f4;">
+                                        <b>软件拉新</b>
+                                    </div>
+                                </div>
+                            </div>
+                    </div>
+                    <div class="mdui-col-xs-12 mdui-col-sm-6 mdui-m-b-2">
+                        <a href="https://hap021819.github.io/" target="_blank" class="remove-underline">
+                            <div class="mdui-card clickable">
+                                <div class="mdui-card-header">
+                                    <div class="mdui-card-header-title" style="color: #6eb498;">
+                                        <b>娱乐一下</b>
+                                    </div>
+                                </div>
+                            </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 点击效果实现的js代码
+        document.addEventListener('click', function (event) {
+            // 定义两个圆的半径
+            var largeRadius = 40; // 大圆的半径
+            var smallRadius = 20; // 小圆的半径
+
+            // 创建大圆元素
+            var largeCircle = createCircle(largeRadius, '#7e57c2', event);
+            document.body.appendChild(largeCircle);
+
+            // 创建小圆元素
+            var smallCircle = createCircle(smallRadius, '#1cae57', event);
+            document.body.appendChild(smallCircle);
+
+            // 启动动画
+            setTimeout(function () {
+                largeCircle.classList.add('animate');
+            }, 0);
+
+            setTimeout(function () {
+                smallCircle.classList.add('animate');
+            }, 100); // 小圆动画延迟100ms
+
+            // 定义移除元素的函数
+            function removeCircles() {
+                largeCircle.removeEventListener('transitionend', removeCircles);
+                smallCircle.removeEventListener('transitionend', removeCircles);
+                document.body.removeChild(largeCircle);
+                document.body.removeChild(smallCircle);
+            }
+
+            // 添加事件监听器以在过渡结束后移除元素
+            largeCircle.addEventListener('transitionend', removeCircles);
+            smallCircle.addEventListener('transitionend', removeCircles);
+
+            // 创建圆形元素的函数
+            function createCircle(radius, color, event) {
+                var circle = document.createElement('div');
+                circle.className = 'click-effect';
+                circle.style.width = circle.style.height = (2 * radius) + 'px';
+                circle.style.backgroundColor = color;
+                circle.style.left = event.pageX - radius + 'px';
+                circle.style.top = event.pageY - radius + 'px';
+                return circle;
+            }
+        });
+
+        document.addEventListener('DOMContentLoaded', function () {
+            function fetchPoem() {
+                fetch('http://www.wudada.online/Api/ScSj')
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        const poemElement = document.getElementById('random-poem');
+                        let poemText = data.data || '这里是随机诗句';
+                        // 检查诗句长度，如果过长则重新请求
+                        if (poemText.length > 12) {
+                            fetchPoem(); // 重新请求
+                        } else {
+                            poemElement.innerText = poemText;
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error fetching the poem:', error);
+                        const poemElement = document.getElementById('random-poem');
+                        poemElement.innerText = '诗云...';
+                    });
+            }
+
+            fetchPoem();
+        });
+
+
+        //字体变化颜色
+        const colors = ['#fc7676', '#785bf7', '#7dc1f4', '#6eb498', '#ebd086'];
+        let colorIndex = 0;
+
+        function changeTextColor() {
+            const textElement = document.getElementById('colorful-text');
+            textElement.style.color = colors[colorIndex];
+            colorIndex = (colorIndex + 1) % colors.length;
+        }
+
+        // 每1000毫秒改变一次颜色
+        setInterval(changeTextColor, 3000);
+
+        // 生成随机颜色的函数
+        //
+        let usedColors = [];
+        function getRandomColor() {
+            let color;
+            do {
+                color = '#' + Math.floor(Math.random() * 16777215).toString(16); // 生成一个随机的十六进制颜色
+            } while (usedColors.includes(color)); // 检查颜色是否已经在数组中
+            usedColors.push(color); // 颜色可用，添加到数组中
+            return color;
+        }
+
+        // 获取所有卡片元素
+        document.querySelectorAll('.mdui-card').forEach(card => {
+            const initialBackgroundColor = card.style.background;
+            const content = card.querySelector('.mdui-card-primary, .mdui-card-content');
+
+            card.addEventListener('mouseover', function () {
+                this.style.background = getRandomColor();
+                content.style.opacity = '0';
+            });
+
+            card.addEventListener('mouseout', function () {
+                this.style.background = initialBackgroundColor;
+                content.style.opacity = '1';
+            });
+        });
+
+
+        // 背景图片数组
+        var backgrounds = [
+            'bg-image-1',
+            'bg-image-2',
+            'bg-image-3',
+            'bg-image-4',
+            'bg-image-5'
+        ];
+        var current = 0; // 当前背景图片的索引
+
+        // 切换背景的函数
+        function changeBackground() {
+            current = (current + 1) % backgrounds.length;
+            document.body.className = 'mdui-theme-primary-black mdui-theme-accent-pink ' + backgrounds[current];
+        }
+
+        // 给切换背景按钮添加点击事件监听器
+        var backgroundTip = document.getElementById('background-tip');
+        backgroundTip.addEventListener('click', function (event) {
+            event.stopPropagation(); // 阻止事件冒泡
+            changeBackground();
+        });
+
+        // 阻止其他元素的点击事件影响背景切换
+        document.addEventListener('click', function (event) {
+            event.stopPropagation(); // 阻止事件冒泡
+        });
+
+        //以下为禁用右键和F12
+        document.addEventListener('keydown', function (event) {
+            if (event.keyCode === 123) { // F12的键码是123
+                event.preventDefault();
+                // 这里可以添加一些提示，alert('开发者工具已被禁用');
+            }
+        });
+        document.addEventListener('contextmenu', function (event) {
+            event.preventDefault();
+        });
+
+        //
+        document.addEventListener('contextmenu', function (event) {
+            event.preventDefault();
+        });
+        // 获取头像元素和音频元素
+        const avatar = document.querySelector('.avatar');
+        const audio = document.getElementById('myAudio');
+
+        // 添加点击事件监听器
+        avatar.addEventListener('click', function () {
+            // 检查音频是否正在播放
+            if (audio.paused) {
+                // 如果音频暂停，播放它
+                audio.play();
+            } else {
+                // 如果音频正在播放，暂停它
+                audio.pause();
+            }
+        });
+
+        //卡片移动控制
+        document.addEventListener('DOMContentLoaded', function () {
+            // 获取所有卡片元素
+            var cards = document.querySelectorAll('.mdui-col-xs-12.mdui-col-sm-6 .mdui-card');
+            // 定义一个变量来跟踪卡片是否正在移动
+            var isMoving = false;
+
+            // 移动卡片的函数
+            function moveCards() {
+                // 切换isMoving状态
+                isMoving = !isMoving;
+
+                cards.forEach(function (card, index) {
+                    // 移除之前的动画效果以避免冲突
+                    card.classList.remove('card-visible', 'card-left', 'card-right', 'card-move');
+
+                    if (isMoving) {
+                        // 根据卡片的索引决定移动方向
+                        if (index % 2 === 0) {
+                            // 偶数索引的卡片向左移动
+                            card.classList.add('card-left');
+                        } else {
+                            // 奇数索引的卡片向右移动
+                            card.classList.add('card-right');
+                        }
+                    } else {
+                        // 恢复原状
+                        card.classList.add('card-visible');
+                    }
+                    // 增加动画效果
+                    card.classList.add('card-move');
+                });
+
+                // 检查卡片是否开始移动
+                if (isMoving) {
+                    // 隐藏文字
+                    document.getElementById('text-to-show').style.opacity = '1';
+                    document.getElementById('text-to-show').style.visibility = 'visible';
+                } else {
+                    // 显示文字
+                    document.getElementById('text-to-show').style.opacity = '0';
+                    document.getElementById('text-to-show').style.visibility = 'hidden';
+                }
+            }
+
+            // 给gecizhanshi按钮添加点击事件监听器
+            var gecizhanshiButton = document.getElementById('gecizhanshi');
+            gecizhanshiButton.addEventListener('click', moveCards);
+
+            // 给guanyuzuozhe按钮添加点击事件监听器
+            var guanyuzuozheButton = document.getElementById('guanyuzuozhe');
+            guanyuzuozheButton.addEventListener('click', moveCards);
+        });
+
+        document.addEventListener('DOMContentLoaded', function () {
+            var gecizhanshiButton = document.getElementById('gecizhanshi');
+            var guanyuzuozheButton = document.getElementById('guanyuzuozhe');
+            var textToShowElement = document.getElementById('text-to-show');
+
+            // 定义显示的文字内容
+            var lyricsText = "这里是歌词内容...";
+            var aboutText = "这里是关于作者的内容...";
+
+            // 移动卡片和更新文字的函数
+            function moveCards() {
+                // 切换isMoving状态
+                isMoving = !isMoving;
+
+                cards.forEach(function (card, index) {
+                    card.classList.remove('card-visible', 'card-left', 'card-right', 'card-move');
+                    if (isMoving) {
+                        if (index % 2 === 0) {
+                            card.classList.add('card-left');
+                        } else {
+                            card.classList.add('card-right');
+                        }
+                    } else {
+                        card.classList.add('card-visible');
+                    }
+                    card.classList.add('card-move');
+                });
+
+                if (isMoving) {
+                    // 显示文字
+                    textToShowElement.style.opacity = '1';
+                    textToShowElement.style.visibility = 'visible';
+                } else {
+                    // 隐藏文字
+                    textToShowElement.style.opacity = '0';
+                    textToShowElement.style.visibility = 'hidden';
+                }
+            }
+
+            // 给gecizhanshi按钮添加点击事件监听器
+            gecizhanshiButton.addEventListener('click', function () {
+                textToShowElement.innerHTML = lyricsText; // 更新显示歌词
+                moveCards();
+            });
+
+            // 给guanyuzuozhe按钮添加点击事件监听器
+            guanyuzuozheButton.addEventListener('click', function () {
+                textToShowElement.innerHTML = aboutText; // 更新显示关于作者的内容
+                moveCards();
+            });
+        });
+    </script>
+</body>
+
+</html>
